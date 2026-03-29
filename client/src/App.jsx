@@ -5,6 +5,7 @@ import Home from './components/Home'
 import About from './components/About'
 import AutoSouqSellCar from './User/SellCAr'
 import Contact from './components/Contact'
+import Detail from './components/Detail'
 
 const App = () => {
 
@@ -31,6 +32,10 @@ const router=createBrowserRouter([
   {
     path:"/contact-us",
     element:<Contact></Contact>
+  },
+  {
+    path:"/car/:id",
+    element:<Detail></Detail>
   },
 
 

@@ -1,5 +1,6 @@
 import { HelicopterIcon } from "lucide-react";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const cars = [
   {
@@ -268,10 +269,14 @@ function CarCard({ car }) {
              <button
             className="text-yellow-400 border border-yellow-400 text-xs px-3 py-1.5 rounded-lg font-medium transition-all duration-200 hover:bg-yellow-400 hover:text-black"
           >
-            View Details →
+         <NavLink to={`/car/${car.id}`}>View Details →</NavLink>
           </button>
       </div>
-      
+      <button
+            className="flex md:hidden m-3 text-yellow-400 border border-yellow-400 text-xs px-3 py-1.5 rounded-lg font-medium transition-all duration-200 hover:bg-yellow-400 hover:text-black"
+          >
+         <NavLink to={`/car/${car.id}`}>View Details →</NavLink>
+          </button>
     </div>
   );
 }
