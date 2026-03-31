@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { SellCar } from "../api/api";
+import { NavLink } from "react-router-dom";
 
 // ─── Toast Hook ──────────────────────────────────────────────
 function useToast() {
@@ -459,7 +460,16 @@ function SummaryLog({ form }) {
   const [status, setStatus] = useState("loading"); // "loading" | "success" | "error"
   const [apiError, setApiError] = useState(null);
 // const [form,setForm]=useState([])
+const hasCalled=useRef(false)
   useEffect(() => {
+if (hasCalled.current) {
+  return 
+}
+
+hasCalled.current=true
+console.log("called");
+
+
     setStatus("loading");
     SellCar(form)
       .then((res) =>{
@@ -652,6 +662,13 @@ function SummaryLog({ form }) {
           <span className="ml-auto bg-green-500/15 text-green-400 text-[10px] font-bold px-3 py-1 rounded-full tracking-wide">
             LIVE
           </span>
+
+          <button class="px-6 py-3 rounded-xl text-white font-semibold 
+bg-linear-to-r from-blue-500 to-indigo-600 
+hover:from-indigo-600 hover:to-blue-500 
+transition-all duration-300 shadow-lg hover:shadow-xl">
+  <NavLink to="/"> Go Back</NavLink>
+</button>
         </div>
 
    
@@ -736,7 +753,7 @@ export default function AutoSouqSellCar() {
       </header>
       <div className="h-0.5 bg-[#18181D]">
         <div
-          className="h-full bg-gradient-to-r from-[#C9A84C] to-[#E2C47A] rounded-full transition-all duration-500"
+          className="h-full bg-linear-to-r from-[#C9A84C] to-[#E2C47A] rounded-full transition-all duration-500"
           style={{ width: `${done ? 100 : progress}%` }}
         />
       </div>

@@ -107,3 +107,72 @@ try {
     }    
 }
 }
+
+
+
+
+
+
+
+
+export const FetchNewCars=async()=>{
+
+
+console.log("called new cars");
+
+try {
+        const data=await api.get(`/user/new-cars`,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const FetchOldCars=async()=>{
+
+
+console.log("called new cars");
+
+try {
+        const data=await api.get(`/user/old-cars`,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}

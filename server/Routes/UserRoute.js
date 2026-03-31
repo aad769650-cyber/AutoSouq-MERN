@@ -171,4 +171,61 @@ const sql = `select * from car_listings where id=?
     
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+UserRouter.get("/old-cars",async(req,res)=>{
+try {
+        console.log("req,res");
+
+// console.log(req.body,"ok",req.file);
+
+
+
+
+
+
+
+const sql = `
+  SELECT * 
+  FROM car_listings 
+  WHERE condition_status = ? 
+`;
+
+const values = ["Used – Fair"];
+        // 4. Execute
+        const [result] = await db.execute(sql, values);
+
+  
+        
+        console.log('User registered with ID:', result.insertId);
+      
+
+
+    res.status(200).send({msg:result})
+} catch (error) {
+    console.log("err in login",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
 export default UserRouter

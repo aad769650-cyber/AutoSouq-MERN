@@ -6,6 +6,8 @@ import About from './components/About'
 import AutoSouqSellCar from './User/SellCAr'
 import Contact from './components/Contact'
 import Detail from './components/Detail'
+import NewCars from './components/NewCars'
+import OldCars from './components/OldCars'
 
 const App = () => {
 
@@ -24,11 +26,19 @@ const router=createBrowserRouter([
     path:"/about",
     element:<About></About>
   }]
-  },
-  {
-    path:"/sell-car",
-    element:<AutoSouqSellCar></AutoSouqSellCar>
-  },
+},
+{
+  path:"/sell-car",
+  element:<AutoSouqSellCar></AutoSouqSellCar>
+},
+{
+  path:"/new-cars",
+  element:<NewCars></NewCars>
+},
+{
+  path:"/used-cars",
+  element:<OldCars></OldCars>
+},
   {
     path:"/contact-us",
     element:<Contact></Contact>
