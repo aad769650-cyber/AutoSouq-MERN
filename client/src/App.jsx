@@ -8,6 +8,9 @@ import Contact from './components/Contact'
 import Detail from './components/Detail'
 import NewCars from './components/NewCars'
 import OldCars from './components/OldCars'
+import ProtectedRoute from './components/ProtectedRoute'
+import Admin from './components/Admin'
+import AdminLogin from './components/AdminLogin'
 
 const App = () => {
 
@@ -49,7 +52,15 @@ const router=createBrowserRouter([
   },
 
 
+{
+  path:"/admin",
+  element:<ProtectedRoute><Admin></Admin></ProtectedRoute>
+},
 
+{
+  path:"/admin-login",
+  element:<AdminLogin></AdminLogin>
+},
 
 ])
 

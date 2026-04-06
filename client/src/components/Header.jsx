@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, replace, useNavigate } from "react-router-dom";
 import { X, Menu, ChevronRight, Phone, Search } from "lucide-react";
 import { toast } from "sonner";
+import { checkAuth } from "../api/api";
 
 const NAV_LINKS = [
   { name: "Home", to: "/" },
   { name: "New Cars", to: "/new-cars" },
   { name: "Used Cars", to: "/used-cars" },
-  { name: "Compare", to: "/compare" },
-  { name: "Dealers", to: "/dealers" },
-  { name: "Finance", to: "/finance" },
+
   { name: "Contact US", to: "/contact-us" },
 ];
 
@@ -27,7 +26,10 @@ const CarLogo = () => (
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
+  
+  const navigate=useNavigate()
+  
+  
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll);
@@ -188,6 +190,24 @@ export default function Header() {
               <NavLink
                 to="/sell-car"
                 className="cta-btn as-logo bg-linear-to-r from-[#C8960F] via-[#D4A017] to-[#F0C840] text-[#0a0a0a] text-[0.75rem] font-700 tracking-[0.13em] uppercase px-6 py-2.5 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,160,23,0.45)] hover:-translate-y-0.5 inline-block"
+              
+
+                    onClick={() => {
+                
+              checkAuth().then((res)=>{
+                console.log(res,"ok");
+                  if(res.status==401){
+                 navigate("/contact-us",{replace:true})
+               }
+                
+              }).catch((err)=>{
+                console.log(err,"err");
+                
+              })           
+            }
+              
+          }
+              
               >
                 Sell Your Car
               </NavLink>
@@ -274,7 +294,27 @@ export default function Header() {
         <div className="relative p-6 border-t border-white/5">
           <NavLink
             to="/sell-car"
-            onClick={() => setIsOpen(false)}
+            onClick={
+              () => {
+                
+                setIsOpen(false)
+              checkAuth().then((res)=>{
+                console.log(res.status,"ok");
+
+               if(res.status==401){
+                 navigate("/contact-us",{replace:true})
+               }
+                
+              }).catch((err)=>{
+                console.log(err,"err");
+                
+              })  
+            
+            }
+          
+            
+            
+            }
             className="cta-btn as-logo block w-full text-center bg-linear-to-r from-[#C8960F] via-[#D4A017] to-[#F0C840] text-[#0a0a0a] text-[0.76rem] font-700 tracking-[0.14em] uppercase py-3.5 transition-all duration-300 hover:shadow-[0_0_28px_rgba(212,160,23,0.4)]"
           >
             Sell Your Car

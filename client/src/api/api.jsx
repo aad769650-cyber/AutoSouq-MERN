@@ -1,4 +1,5 @@
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 const api=axios.create({
     baseURL:"http://localhost:8000"
 })
@@ -117,7 +118,6 @@ try {
 
 export const FetchNewCars=async()=>{
 
-
 console.log("called new cars");
 
 try {
@@ -160,6 +160,99 @@ console.log("called new cars");
 
 try {
         const data=await api.get(`/user/old-cars`,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+
+
+
+
+
+
+
+
+
+export const checkAuth=async()=>{
+
+try {
+        const data=await api.get(`/user/check-auth`,{withCredentials:true})
+
+
+    console.log("data",data);
+
+
+    
+    return data;
+
+
+  } catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.log('Server Error:', err.response.data.msg);
+return err
+    } else if (err.request) {
+      // Request sent but no response
+      console.log('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+
+
+
+
+
+
+export const FetchSignupUser=async()=>{
+
+
+console.log("called");
+
+try {
+        const data=await api.get(`/user/registerUser`,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+
+
+
+
+
+
+export const FetchCars=async()=>{
+
+
+console.log("called  cars");
+
+try {
+        const data=await api.get(`/user/car_listings`,{withCredentials:true})
 
 
     console.log("data",data);

@@ -5,7 +5,7 @@ import path from "path"
 import  {UploadOnCloudinary} from "./utills/cloudinary.js"
 import { db } from "./connnection/connection.js";
 import UserRouter from "./Routes/UserRoute.js";
-
+import cookieParser from "cookie-parser";
 
 
 
@@ -34,6 +34,7 @@ const uploads=multer({storage})
 const app=express();
 
 
+app.use(cookieParser())
 
 app.use(express.json());
 

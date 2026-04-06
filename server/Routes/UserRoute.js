@@ -4,6 +4,7 @@ import generateAccessToken from "../Auth/auth.js";
 import { UploadOnCloudinary } from "../utills/cloudinary.js";
 import hashPassword from "../bcrypt/bcrypt.js";
 import { db } from "../connnection/connection.js";
+import { AuthenticateUser } from "../middleware/middleware.js";
 
 
 const storage=multer.diskStorage({
@@ -186,6 +187,53 @@ const sql = `select * from car_listings where id=?
 
 
 
+UserRouter.get("/new-cars",async(req,res)=>{
+try {
+        console.log("req,res");
+
+// console.log(req.body,"ok",req.file);
+
+
+
+
+
+
+
+const sql = `
+  SELECT * 
+  FROM car_listings 
+  WHERE condition_status = ? OR condition_status = ? 
+`;
+
+const values = ["Used – Good","Used – Like New"];
+        // 4. Execute
+        const [result] = await db.execute(sql, values);
+
+  
+        
+        console.log('User registered with ID:', result.insertId);
+      
+
+
+    res.status(200).send({msg:result})
+} catch (error) {
+    console.log("err in login",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -222,6 +270,132 @@ const values = ["Used – Fair"];
     res.status(200).send({msg:result})
 } catch (error) {
     console.log("err in login",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+UserRouter.get("/check-auth",AuthenticateUser,async(req,res)=>{
+try {
+        console.log("req,res");
+
+
+
+
+
+
+
+
+
+
+        
+      
+
+
+    res.status(200).send({msg:"ok"})
+} catch (error) {
+    console.log("err in auth",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
+
+
+
+
+
+UserRouter.get("/car_listings",async(req,res)=>{
+try {
+        console.log("req,res");
+
+
+
+
+const sql = `
+  SELECT * 
+  FROM car_listings 
+  
+`;
+
+        // 4. Execute
+        const [result] = await db.execute(sql);
+
+  
+        
+        console.log('User registered with ID:', result);
+      
+
+
+
+
+
+        
+      
+
+
+    res.status(200).send({msg:result})
+} catch (error) {
+    console.log("err in auth",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
+
+
+
+
+
+
+
+UserRouter.get("/registerUser",async(req,res)=>{
+try {
+        console.log("req,res");
+
+
+
+
+const sql = `
+  SELECT * 
+  FROM signup
+  
+`;
+
+        // 4. Execute
+        const [result] = await db.execute(sql);
+
+  
+        
+        console.log('User registered with ID:', result);
+      
+
+
+
+
+
+        
+      
+
+
+    res.status(200).send({msg:result})
+} catch (error) {
+    console.log("err in auth",error);
         res.status(404).json({msg:"error in signup"})
 
 }
