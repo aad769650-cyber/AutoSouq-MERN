@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FetchCars, FetchSignupUser } from "../api/api";
+import { NavLink } from "react-router-dom";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -112,16 +113,21 @@ const NAV = [
 
 function Sidebar({ tab, setTab }) {
   return (
-    <aside className="hidden md:flex w-56 shrink-0 flex-col border-r border-white/[0.07] bg-[#0d0d10] px-3 py-5">
+    <aside className="hidden md:flex w-56 shrink-0 flex-col border-r border-white/[0.07] bg-[#0d0d10] px-3 py-5 ">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-2 pb-7">
-        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-sm shadow-lg shadow-blue-900/40">
-          🚗
-        </div>
-        <span className="text-[15px] font-bold tracking-tight text-white">CarAdmin</span>
-      </div>
+            <NavLink to="/" className="flex items-center gap-3 group mb-2">
+              <div className="relative">
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="as-logo text-[1.6rem] font-700 tracking-[0.04em] text-white">
+                  <img src="logo.svg" alt="Main Logo" />
+                </span>
+                <span className="text-[0.5rem] tracking-[0.32em] text-white/25 uppercase font-light mt-0.5">
+                  Drive Your Dream
+                </span>
+              </div>
+            </NavLink>
 
-      <p className="px-2 mb-2 text-[10px] font-bold uppercase tracking-[1.5px] text-zinc-600">Menu</p>
 
       <nav className="flex flex-col gap-0.5">
         {NAV.map((item) => (
@@ -131,7 +137,7 @@ function Sidebar({ tab, setTab }) {
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all text-left
               ${tab === item.id
                 ? "bg-blue-500/10 text-blue-400"
-                : "text-zinc-500 hover:text-zinc-200 hover:bg-white/[0.04]"
+                : "text-zinc-500 hover:text-zinc-200 hover:bg-white/4"
               }`}
           >
             <span className="text-base w-5 text-center">{item.icon}</span>
@@ -140,14 +146,14 @@ function Sidebar({ tab, setTab }) {
         ))}
       </nav>
 
-      <div className="mt-auto pt-4 border-t border-white/[0.06]">
-        <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-white/[0.04] cursor-pointer">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
-            AK
+      <div className="mt-auto pt-4 border-t border-white/6">
+        <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-white/4 cursor-pointer">
+          <div className="w-7 h-7 rounded-full bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+            MAR
           </div>
           <div className="overflow-hidden">
-            <p className="text-[12px] font-semibold text-zinc-300 truncate">Admin Khan</p>
-            <p className="text-[11px] text-zinc-600">Super Admin</p>
+            <p className="text-[12px] font-semibold text-zinc-300 truncate">Mahar</p>
+            <p className="text-[11px] text-zinc-600">MERN DEV</p>
           </div>
         </div>
       </div>
@@ -176,7 +182,7 @@ function OverviewTab({ cars, users, loading }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Recent listings */}
         <div className="lg:col-span-2 rounded-xl border border-white/[0.07] bg-[#111114] overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/6">
             <h3 className="text-[13px] font-semibold text-white">Recent Listings</h3>
             <span className="text-[11px] text-blue-400 cursor-pointer hover:underline">View all →</span>
           </div>
@@ -193,7 +199,7 @@ function OverviewTab({ cars, users, loading }) {
               <tbody>
                 {loading
                   ? Array(4).fill(0).map((_, i) => (
-                      <tr key={i} className="border-t border-white/[0.04]">
+                      <tr key={i} className="border-t border-white/4">
                         <td className="px-5 py-3"><Skeleton className="h-4 w-32" /></td>
                         <td className="py-3"><Skeleton className="h-4 w-16" /></td>
                         <td className="py-3"><Skeleton className="h-4 w-16" /></td>
@@ -201,7 +207,7 @@ function OverviewTab({ cars, users, loading }) {
                       </tr>
                     ))
                   : recent.map((c) => (
-                      <tr key={c.id} className="border-t border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                      <tr key={c.id} className="border-t border-white/4 hover:bg-white/2 transition-colors">
                         <td className="px-5 py-3">
                           <p className="font-medium text-zinc-200 text-[13px]">{c.carTitle || c.model}</p>
                           <p className="text-[11px] text-zinc-600">{c.year} · {c.fuelType}</p>
@@ -233,7 +239,7 @@ function OverviewTab({ cars, users, loading }) {
                     <span className="text-zinc-300 font-medium">{b.name}</span>
                     <span className="text-zinc-500 font-mono">{b.pct}%</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                  <div className="h-1.5 rounded-full bg-white/6 overflow-hidden">
                     <div
                       className={`h-full rounded-full ${barColors[i % barColors.length]}`}
                       style={{ width: `${b.pct}%` }}
@@ -277,7 +283,7 @@ function CarsTab({ cars, loading }) {
               className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all
                 ${filter === f
                   ? "bg-blue-500/15 text-blue-400 ring-1 ring-blue-500/30"
-                  : "text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]"
+                  : "text-zinc-500 hover:text-zinc-300 hover:bg-white/4"
                 }`}
             >
               {f}
@@ -290,7 +296,7 @@ function CarsTab({ cars, loading }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search listings..."
-            className="pl-8 pr-4 py-1.5 bg-white/[0.04] border border-white/[0.08] rounded-lg text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500/40 w-56 transition"
+            className="pl-8 pr-4 py-1.5 bg-white/4 border border-white/8 rounded-lg text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500/40 w-56 transition"
           />
         </div>
       </div>
@@ -314,7 +320,7 @@ function CarsTab({ cars, loading }) {
             <tbody>
               {loading
                 ? Array(6).fill(0).map((_, i) => (
-                    <tr key={i} className="border-t border-white/[0.04]">
+                    <tr key={i} className="border-t border-white/4">
                       {Array(8).fill(0).map((__, j) => (
                         <td key={j} className="px-5 py-3"><Skeleton className="h-4 w-full" /></td>
                       ))}
@@ -329,17 +335,17 @@ function CarsTab({ cars, loading }) {
                 : filtered.map((c) => {
                     const brand = Array.isArray(c.brand) ? c.brand[0] : c.brand;
                     return (
-                      <tr key={c.id} className="border-t border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                      <tr key={c.id} className="border-t border-white/4 hover:bg-white/2 transition-colors">
                         <td className="px-5 py-3">
                           <div className="flex items-center gap-3">
                             {c.images?.[0] ? (
                               <img
                                 src={c.images[0]}
                                 alt=""
-                                className="w-10 h-8 rounded-md object-cover bg-white/[0.05] shrink-0"
+                                className="w-10 h-8 rounded-md object-cover bg-white/5 shrink-0"
                               />
                             ) : (
-                              <div className="w-10 h-8 rounded-md bg-white/[0.05] flex items-center justify-center text-lg shrink-0">🚗</div>
+                              <div className="w-10 h-8 rounded-md bg-white/5 flex items-center justify-center text-lg shrink-0">🚗</div>
                             )}
                             <div>
                               <p className="font-medium text-zinc-200 text-[13px] leading-tight">{c.carTitle || c.model}</p>
@@ -384,7 +390,7 @@ function UsersTab({ users, loading }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search users..."
-            className="pl-8 pr-4 py-1.5 bg-white/[0.04] border border-white/[0.08] rounded-lg text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500/40 w-56 transition"
+            className="pl-8 pr-4 py-1.5 bg-white/4 border border-white/8 rounded-lg text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500/40 w-56 transition"
           />
         </div>
       </div>
@@ -403,7 +409,7 @@ function UsersTab({ users, loading }) {
             <tbody>
               {loading
                 ? Array(5).fill(0).map((_, i) => (
-                    <tr key={i} className="border-t border-white/[0.04]">
+                    <tr key={i} className="border-t border-white/4">
                       {Array(4).fill(0).map((__, j) => (
                         <td key={j} className="px-5 py-3"><Skeleton className="h-4 w-full" /></td>
                       ))}
@@ -416,7 +422,7 @@ function UsersTab({ users, loading }) {
                     </tr>
                   )
                 : filtered.map((u, i) => (
-                    <tr key={u.id} className="border-t border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                    <tr key={u.id} className="border-t border-white/4 hover:bg-white/[0.02] transition-colors">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
                           {u.img_url ? (
@@ -487,13 +493,9 @@ export default function Admin() {
           </div>
           <div className="flex items-center gap-2">
             {/* Notification */}
-            <button className="relative w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-sm hover:bg-white/[0.07] transition">
-              🔔
-              <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-rose-500 rounded-full" />
-            </button>
             {/* New listing */}
             <button className="flex items-center gap-2 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 transition rounded-lg text-[13px] font-semibold shadow-lg shadow-blue-900/30">
-              <span>+</span> New Listing
+              <span>+</span> <NavLink to={tab=="users"?"/contact-us":"/sell-car"}>New Listing</NavLink>
             </button>
           </div>
         </header>
