@@ -6,6 +6,7 @@ import { checkAuth } from "../api/api";
 
 const NAV_LINKS = [
   { name: "Home", to: "/" },
+  { name: "About Us", to: "/about-us" },
   { name: "New Cars", to: "/new-cars" },
   { name: "Used Cars", to: "/used-cars" },
 

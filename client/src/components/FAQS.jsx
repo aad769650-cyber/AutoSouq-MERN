@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { NavLink } from "react-router-dom";
 
 const faqs = [
   {
@@ -216,7 +217,7 @@ export default function FAQ() {
         <p className="text-sm font-semibold text-zinc-300 mb-1">Still have questions?</p>
         <p className="text-[13px] text-zinc-600 mb-5">Our team is available 7 days a week, in Arabic and English.</p>
         <button className="border border-yellow-500 text-yellow-400 hover:bg-yellow-400 hover:text-black text-[12px] font-semibold tracking-widest uppercase px-7 py-3 rounded-xl transition-all duration-150">
-          Contact Support
+          <NavLink to="/contact-us">Contact Support</NavLink>
         </button>
       </div>
     </section>

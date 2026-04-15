@@ -269,3 +269,67 @@ try {
     }    
 }
 }
+
+
+
+
+
+
+
+
+export const DeleteCar=async(id)=>{
+
+
+console.log("id",id);
+
+try {
+        const data=await api.delete(`/user/deleteUser/${id}`,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+
+
+
+
+
+
+
+export const UpdateUser=async(formData)=>{
+
+
+console.log("formUpdateData",formData);
+
+try {
+        const data=await api.patch(`/user/updateUser`,formData,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+
+
+

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FetchCars, FetchSignupUser } from "../api/api";
+import { DeleteCar, FetchCars, FetchSignupUser, UpdateUser } from "../api/api";
 import { NavLink } from "react-router-dom";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -114,20 +114,17 @@ const NAV = [
 function Sidebar({ tab, setTab }) {
   return (
     <aside className="hidden md:flex w-56 shrink-0 flex-col border-r border-white/[0.07] bg-[#0d0d10] px-3 py-5 ">
-      {/* Logo */}
-            <NavLink to="/" className="flex items-center gap-3 group mb-2">
-              <div className="relative">
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="as-logo text-[1.6rem] font-700 tracking-[0.04em] text-white">
-                  <img src="logo.svg" alt="Main Logo" />
-                </span>
-                <span className="text-[0.5rem] tracking-[0.32em] text-white/25 uppercase font-light mt-0.5">
-                  Drive Your Dream
-                </span>
-              </div>
-            </NavLink>
-
+      <NavLink to="/" className="flex items-center gap-3 group mb-2">
+        <div className="relative"></div>
+        <div className="flex flex-col leading-none">
+          <span className="as-logo text-[1.6rem] font-700 tracking-[0.04em] text-white">
+            <img src="logo.svg" alt="Main Logo" />
+          </span>
+          <span className="text-[0.5rem] tracking-[0.32em] text-white/25 uppercase font-light mt-0.5">
+            Drive Your Dream
+          </span>
+        </div>
+      </NavLink>
 
       <nav className="flex flex-col gap-0.5">
         {NAV.map((item) => (
@@ -255,11 +252,153 @@ function OverviewTab({ cars, users, loading }) {
   );
 }
 
+// ─── Car Modal (Add / Edit) ───────────────────────────────────────────────────
+
+const EMPTY_CAR = {
+  carTitle: "", brand: "", city: "", price: "", mileage: "",
+  fuelType: "", year: "", condition_status: "Available", images: [],
+};
+const FUELS    = ["Petrol", "Diesel", "Electric", "Hybrid", "CNG"];
+const STATUSES = ["Available", "Reserved", "Sold"];
+
+function CarModal({ car, onSave, onClose }) {
+  const [form, setForm] = useState(
+    car
+      ? { ...car, brand: Array.isArray(car.brand) ? car.brand[0] : (car.brand || "") }
+      : { ...EMPTY_CAR }
+  );
+  const isEdit = Boolean(car);
+  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+
+  const handleSubmit = () => {
+    if (!form.carTitle.trim()) return;
+    onSave({
+      ...form,
+      brand: [form.brand],
+      price: Number(form.price),
+      mileage: Number(form.mileage),
+    });
+  };
+
+  const field =
+    "w-full bg-white/4 border border-white/8 rounded-lg text-[13px] text-zinc-200 placeholder-zinc-600 px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500/40 transition";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="w-full max-w-lg bg-[#111114] border border-white/[0.09] rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+        {/* header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07]">
+          <h2 className="text-[15px] font-semibold text-zinc-100">
+            {isEdit ? "Edit Listing" : "Add New Listing"}
+          </h2>
+          <button onClick={onClose} className="text-zinc-500 hover:text-zinc-300 text-xl leading-none transition">✕</button>
+        </div>
+
+        {/* body */}
+        <div className="overflow-y-auto flex-1 px-6 py-5 flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Title *</label>
+            <input className={field} placeholder="e.g. 2022 Toyota Camry LE" value={form.carTitle} onChange={(e) => set("carTitle", e.target.value)} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Brand</label>
+              <input className={field} placeholder="Toyota" value={form.brand} onChange={(e) => set("brand", e.target.value)} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Year</label>
+              <input className={field} placeholder="2022" type="number" value={form.year} onChange={(e) => set("year", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Price (₨)</label>
+              <input className={field} placeholder="2500000" type="number" value={form.price} onChange={(e) => set("price", e.target.value)} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Mileage (km)</label>
+              <input className={field} placeholder="45000" type="number" value={form.mileage} onChange={(e) => set("mileage", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">City</label>
+            <input className={field} placeholder="Lahore" value={form.city} onChange={(e) => set("city", e.target.value)} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Fuel Type</label>
+              <select className={field} value={form.fuelType} onChange={(e) => set("fuelType", e.target.value)}>
+                <option value="">Select…</option>
+                {FUELS.map((f) => <option key={f} value={f}>{f}</option>)}
+              </select>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">Status</label>
+              <select className={field} value={form.condition_status} onChange={(e) => set("condition_status", e.target.value)}>
+                {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+
+        </div>
+
+        {/* footer */}
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.07]">
+          <button onClick={onClose} className="px-4 py-2 text-[13px] font-semibold text-zinc-500 hover:text-zinc-300 transition">
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!form.carTitle.trim()}
+            className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[13px] font-semibold transition"
+          >
+            {isEdit ? "Save Changes" : "Add Listing"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Delete Confirm ───────────────────────────────────────────────────────────
+
+function DeleteConfirm({ car, onConfirm, onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="w-full max-w-sm bg-[#111114] border border-white/[0.09] rounded-2xl shadow-2xl p-6 flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-[15px] font-semibold text-zinc-100">Delete listing?</h2>
+          <p className="text-[13px] text-zinc-500 leading-relaxed">
+            <span className="text-zinc-300 font-medium">{car.carTitle || car.model}</span>{" "}
+            will be permanently removed. This cannot be undone.
+          </p>
+        </div>
+        <div className="flex gap-3 justify-end">
+          <button onClick={onClose} className="px-4 py-2 text-[13px] font-semibold text-zinc-500 hover:text-zinc-300 transition">
+            Cancel
+          </button>
+          <button onClick={onConfirm} className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-[13px] font-semibold transition">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Cars Tab ─────────────────────────────────────────────────────────────────
 
-function CarsTab({ cars, loading }) {
+function CarsTab({ cars, setCars, loading }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
+  const [modal, setModal] = useState(null); // null | { type: "add"|"edit"|"delete", car? }
+
+  const FILTERS = ["All"];
 
   const filtered = cars.filter((c) => {
     const matchSearch =
@@ -269,105 +408,154 @@ function CarsTab({ cars, loading }) {
     return matchSearch && matchFilter;
   });
 
-  const FILTERS = ["All", "Available", "Reserved", "Sold"];
+  const handleAdd = (data) => {
+    setCars((prev) => [{ ...data, id: crypto.randomUUID(), created_at: new Date().toISOString() }, ...prev]);
+    setModal(null);
+  };
+
+  const handleEdit = (data) => {
+
+
+    console.log(data);
+    UpdateUser(data)
+  console.log("hello ia m coming in aminut")  
+    setCars((prev) => prev.map((c) => (c.id === data.id ? { ...c, ...data } : c)));
+    setModal(null);
+  };
+
+  const handleDelete = (id) => {
+
+    console.log(id);
+    DeleteCar(id)
+    setCars((prev) => prev.filter((c) => c.id !== id));
+    setModal(null);
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-        <div className="flex gap-2">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all
-                ${filter === f
-                  ? "bg-blue-500/15 text-blue-400 ring-1 ring-blue-500/30"
-                  : "text-zinc-500 hover:text-zinc-300 hover:bg-white/4"
-                }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-        <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-[13px]">🔍</span>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search listings..."
-            className="pl-8 pr-4 py-1.5 bg-white/4 border border-white/8 rounded-lg text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500/40 w-56 transition"
-          />
-        </div>
-      </div>
+    <>
+      {modal?.type === "add"    && <CarModal onSave={handleAdd} onClose={() => setModal(null)} />}
+      {modal?.type === "edit"   && <CarModal car={modal.car} onSave={handleEdit} onClose={() => setModal(null)} />}
+      {modal?.type === "delete" && <DeleteConfirm car={modal.car} onConfirm={() => handleDelete(modal.car.id)} onClose={() => setModal(null)} />}
 
-      {/* Table */}
-      <div className="rounded-xl border border-white/[0.07] bg-[#111114] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 border-b border-white/[0.06]">
-                <th className="text-left px-5 py-3.5">Car</th>
-                <th className="text-left py-3.5">Brand</th>
-                <th className="text-left py-3.5">City</th>
-                <th className="text-left py-3.5">Price</th>
-                <th className="text-left py-3.5">Mileage</th>
-                <th className="text-left py-3.5">Fuel</th>
-                <th className="text-left py-3.5">Status</th>
-                <th className="text-left py-3.5">Listed</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading
-                ? Array(6).fill(0).map((_, i) => (
-                    <tr key={i} className="border-t border-white/4">
-                      {Array(8).fill(0).map((__, j) => (
-                        <td key={j} className="px-5 py-3"><Skeleton className="h-4 w-full" /></td>
-                      ))}
-                    </tr>
-                  ))
-                : filtered.length === 0
-                ? (
-                    <tr>
-                      <td colSpan={8} className="text-center py-12 text-zinc-600 text-sm">No listings found.</td>
-                    </tr>
-                  )
-                : filtered.map((c) => {
-                    const brand = Array.isArray(c.brand) ? c.brand[0] : c.brand;
-                    return (
-                      <tr key={c.id} className="border-t border-white/4 hover:bg-white/2 transition-colors">
-                        <td className="px-5 py-3">
-                          <div className="flex items-center gap-3">
-                            {c.images?.[0] ? (
-                              <img
-                                src={c.images[0]}
-                                alt=""
-                                className="w-10 h-8 rounded-md object-cover bg-white/5 shrink-0"
-                              />
-                            ) : (
-                              <div className="w-10 h-8 rounded-md bg-white/5 flex items-center justify-center text-lg shrink-0">🚗</div>
-                            )}
-                            <div>
-                              <p className="font-medium text-zinc-200 text-[13px] leading-tight">{c.carTitle || c.model}</p>
-                              <p className="text-[11px] text-zinc-600">{c.year}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="py-3 text-[13px] text-zinc-400">{brand || "—"}</td>
-                        <td className="py-3 text-[13px] text-zinc-400">{c.city || "—"}</td>
-                        <td className="py-3 font-mono text-[13px] text-white font-semibold">{fmt(c.price)}</td>
-                        <td className="py-3 text-[13px] text-zinc-400">{c.mileage ? `${Number(c.mileage).toLocaleString()} km` : "—"}</td>
-                        <td className="py-3 text-[13px] text-zinc-400">{c.fuelType || "—"}</td>
-                        <td className="py-3"><StatusBadge status={c.condition_status} /></td>
-                        <td className="py-3 text-[12px] text-zinc-600">{c.created_at ? timeAgo(c.created_at) : "—"}</td>
-                      </tr>
-                    );
-                  })}
-            </tbody>
-          </table>
+      <div className="flex flex-col gap-4">
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="flex gap-2">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all
+                  ${filter === f
+                    ? "bg-blue-500/15 text-blue-400 ring-1 ring-blue-500/30"
+                    : "text-zinc-500 hover:text-zinc-300 hover:bg-white/4"
+                  }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-[13px]">🔍</span>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search listings..."
+                className="pl-8 pr-4 py-1.5 bg-white/4 border border-white/8 rounded-lg text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-blue-500/40 w-56 transition"
+              />
+            </div>
+       
+          </div>
         </div>
+
+        {/* Table */}
+        <div className="rounded-xl border border-white/[0.07] bg-[#111114] overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 border-b border-white/[0.06]">
+                  <th className="text-left px-5 py-3.5">Car</th>
+                  <th className="text-left py-3.5">Brand</th>
+                  <th className="text-left py-3.5">City</th>
+                  <th className="text-left py-3.5">Price</th>
+                  <th className="text-left py-3.5">Mileage</th>
+                  <th className="text-left py-3.5">Fuel</th>
+                  <th className="text-left py-3.5">Status</th>
+                  <th className="text-left py-3.5">Listed</th>
+                  <th className="py-3.5 pr-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading
+                  ? Array(6).fill(0).map((_, i) => (
+                      <tr key={i} className="border-t border-white/4">
+                        {Array(9).fill(0).map((__, j) => (
+                          <td key={j} className="px-5 py-3"><Skeleton className="h-4 w-full" /></td>
+                        ))}
+                      </tr>
+                    ))
+                  : filtered.length === 0
+                  ? (
+                      <tr>
+                        <td colSpan={9} className="text-center py-12 text-zinc-600 text-sm">No listings found.</td>
+                      </tr>
+                    )
+                  : filtered.map((c) => {
+                      const brand = Array.isArray(c.brand) ? c.brand[0] : c.brand;
+                      return (
+                        <tr key={c.id} className="border-t border-white/4 hover:bg-white/[0.02] transition-colors group">
+                          <td className="px-5 py-3">
+                            <div className="flex items-center gap-3">
+                              {c.images?.[0] ? (
+                                <img src={c.images[0]} alt="" className="w-10 h-8 rounded-md object-cover bg-white/5 shrink-0" />
+                              ) : (
+                                <div className="w-10 h-8 rounded-md bg-white/5 flex items-center justify-center text-lg shrink-0">🚗</div>
+                              )}
+                              <div>
+                                <p className="font-medium text-zinc-200 text-[13px] leading-tight">{c.carTitle || c.model}</p>
+                                <p className="text-[11px] text-zinc-600">{c.year}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-3 text-[13px] text-zinc-400">{brand || "—"}</td>
+                          <td className="py-3 text-[13px] text-zinc-400">{c.city || "—"}</td>
+                          <td className="py-3 font-mono text-[13px] text-white font-semibold">{fmt(c.price)}</td>
+                          <td className="py-3 text-[13px] text-zinc-400">{c.mileage ? `${Number(c.mileage).toLocaleString()} km` : "—"}</td>
+                          <td className="py-3 text-[13px] text-zinc-400">{c.fuelType || "—"}</td>
+                          <td className="py-3"><StatusBadge status={c.condition_status} /></td>
+                          <td className="py-3 text-[12px] text-zinc-600">{c.created_at ? timeAgo(c.created_at) : "—"}</td>
+                          <td className="py-3 pr-4">
+                            <div className="flex items-center justify-end gap-1 ">
+                              <button
+                                onClick={() => setModal({ type: "edit", car: c })}
+                                className="px-2.5 py-1 rounded-md text-[12px] font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-white/6 transition"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => setModal({ type: "delete", car: c })}
+                                className="px-2.5 py-1 rounded-md text-[12px] font-semibold text-red-500/70 hover:text-red-400 hover:bg-red-500/8 transition"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {!loading && (
+          <p className="text-[12px] text-zinc-600 px-1">
+            {filtered.length} of {cars.length} listing{cars.length !== 1 ? "s" : ""}
+          </p>
+        )}
       </div>
-    </div>
+    </>
   );
 }
 
@@ -492,10 +680,8 @@ export default function Admin() {
             <p className="text-[12px] text-zinc-600 mt-0.5">{sub}</p>
           </div>
           <div className="flex items-center gap-2">
-            {/* Notification */}
-            {/* New listing */}
             <button className="flex items-center gap-2 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 transition rounded-lg text-[13px] font-semibold shadow-lg shadow-blue-900/30">
-              <span>+</span> <NavLink to={tab=="users"?"/contact-us":"/sell-car"}>New Listing</NavLink>
+              <span>+</span> <NavLink to={tab === "users" ? "/contact-us" : "/sell-car"}>New Listing</NavLink>
             </button>
           </div>
         </header>
@@ -503,8 +689,8 @@ export default function Admin() {
         {/* Main content */}
         <main className="flex-1 overflow-y-auto p-6">
           {tab === "overview" && <OverviewTab cars={cars} users={users} loading={loadingCars || loadingUsers} />}
-          {tab === "cars" && <CarsTab cars={cars} loading={loadingCars} />}
-          {tab === "users" && <UsersTab users={users} loading={loadingUsers} />}
+          {tab === "cars"     && <CarsTab cars={cars} setCars={setCars} loading={loadingCars} />}
+          {tab === "users"    && <UsersTab users={users} loading={loadingUsers} />}
         </main>
       </div>
     </div>

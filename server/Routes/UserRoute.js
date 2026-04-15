@@ -402,4 +402,87 @@ const sql = `
     
 })
 
+
+
+
+UserRouter.delete("/deleteUser/:id",async(req,res)=>{
+try {
+        console.log("req,response",req.params.id);
+
+
+const id=req.params.id;
+
+
+const sql = `
+ Delete from car_listings where id=?
+  
+`;
+const values=Number(id);
+        // 4. Execute
+        const [result] = await db.execute(sql,[values]);
+
+  
+        
+      
+
+
+
+
+        
+      
+
+
+    res.status(200).send({msg:"okay"})
+} catch (error) {
+    console.log("err in auth",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
+
+
+
+
+
+
+
+
+UserRouter.patch("/updateUser",async(req,res)=>{
+try {
+        console.log("req,res",req.body);
+
+
+const {id,carTitle,brand,year,mileage,price,city}=req.body;
+
+const sql = `
+ Update  car_listings set carTitle=?,brand=?,year=?,mileage=?,price=?,city=? where id=?
+  
+`;
+const values=[carTitle,brand,year,mileage,price,city,id]
+      
+        const [result] = await db.execute(sql,values);
+
+  
+        
+        // console.log('User registered with ID:', "result");
+      
+
+
+
+
+        
+      
+
+
+    res.status(200).send({msg:"ok"})
+} catch (error) {
+    console.log("err in auth",error);
+        res.status(404).json({msg:"error in signup"})
+
+}
+    
+})
+
 export default UserRouter
