@@ -333,3 +333,27 @@ try {
 
 
 
+
+export const SendMail=async()=>{
+
+
+
+try {
+        const data=await api.get(`/sendMail`,{withCredentials:true})
+
+
+    console.log("data",data);
+    return data
+} catch (err) {
+    if (err.response) {
+      // Server responded with error
+      console.error('Server Error:', err.response.data.error);
+    } else if (err.request) {
+      // Request sent but no response
+      console.error('No response from server');
+    } else {
+      console.error('Error:', err.message);
+    }    
+}
+}
+

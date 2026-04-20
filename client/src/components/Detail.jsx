@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { CarDetail } from "../api/api";
+import { CarDetail, SendMail } from "../api/api";
 import { useParams } from "react-router-dom";
-
+import { Mail } from "lucide-react";
+import {toast} from "sonner"
 /* ─────────────────────────────────────────────
    ICONS
 ───────────────────────────────────────────── */
@@ -459,18 +460,24 @@ const {id}=useParams()
 
               {/* CTAs */}
               <div className="space-y-2.5">
-                {car.contactMethod === "WhatsApp" ? (
-                  <a href={`https://wa.me/${(car.phone || "").replace(/\D/g, "")}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-3.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                    <Ico d={P.whatsapp} size={16} /> Chat on WhatsApp
+             
+                  <a 
+
+onClick={()=>{
+  toast.info("Mail is sent to seller,We Contact to you soon")
+
+SendMail().then((res)=>{console.log("response",res);
+}).catch((err)=>{
+  console.log("err",err);
+  
+})
+
+}}
+                    className="w-full cursor-pointer bg-[#e8b86d] hover:bg-[#d4a55a] text-black font-semibold py-3.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                    <Mail></Mail> Mail Seller
                   </a>
-                ) : (
-                  <a href={`tel:${car.phone}`}
-                    className="w-full bg-[#e8b86d] hover:bg-[#d4a55a] text-black font-semibold py-3.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
-                    <Ico d={P.phone} size={16} /> Call Seller
-                  </a>
-                )}
+              
+              
                 <button onClick={() => setTab("finance")}
                   className="w-full border border-zinc-700 hover:border-[#e8b86d]/50 text-zinc-300 font-medium py-3 rounded-xl transition text-sm hover:bg-zinc-800/40">
                   Calculate Finance

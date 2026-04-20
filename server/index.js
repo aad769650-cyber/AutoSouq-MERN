@@ -6,7 +6,7 @@ import  {UploadOnCloudinary} from "./utills/cloudinary.js"
 import { db } from "./connnection/connection.js";
 import UserRouter from "./Routes/UserRoute.js";
 import cookieParser from "cookie-parser";
-
+import nodemailer from "nodemailer"
 
 
 
@@ -145,6 +145,54 @@ INSERT INTO car_listings (
 
 
 app.use("/user",UserRouter)
+
+
+
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  }
+});
+
+
+
+app.get("/sendMail", async (req, res) => {
+
+  const mailConfig = {
+    from: "aad769650@gmail.com",
+    to: "aad769650@gmail.com",
+    subject: `Car buyer `,
+    text:` i want to buy car can we please discuss further
+
+
+    `,
+  };
+
+  try {
+    await transport.sendMail(mailConfig);
+    console.log("Email sent");
+    return res.status(200).json({ success: true, message: "Email sent successfully" });
+  } catch (err) {
+    console.error("Email error:", err.code || err.message);
+    return res.status(500).json({ success: false, message: "Failed to send email" });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(8000,()=>{
     console.log("Server is listening on port 8000");

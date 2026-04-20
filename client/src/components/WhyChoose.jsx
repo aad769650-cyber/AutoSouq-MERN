@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const features = [
   {
     title: "Verified Listings Only",
@@ -154,11 +156,9 @@ export default function WhyChoose() {
       {/* CTA */}
       <div className="text-center flex items-center justify-center gap-3 flex-wrap">
         <button className="bg-yellow-400 hover:bg-yellow-300 text-black text-[13px] font-bold tracking-widest uppercase px-8 py-3.5 rounded-xl transition-colors duration-150">
-          Browse Listings
+      <NavLink to={"/sell-car"}>Sell Your Car</NavLink>
         </button>
-        <button className="text-zinc-500 hover:text-yellow-400 border border-zinc-800 hover:border-yellow-400 text-[13px] px-7 py-3.5 rounded-xl tracking-wide transition-colors duration-150">
-          Sell Your Car
-        </button>
+
       </div>
     </section>
   );

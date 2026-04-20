@@ -13,4 +13,13 @@ dotenv.config()
     
 }
 
+ export const generateRefreshToken=(payload)=>{
+    console.log("payload",payload);
+
+    return jwt.sign(payload,process.env.RefreshToken)
+
+
+    
+}
+
 export default generateAccessToken

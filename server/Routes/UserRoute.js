@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer"
-import generateAccessToken from "../Auth/auth.js";
+import generateAccessToken, { generateRefreshToken } from "../Auth/auth.js";
 import { UploadOnCloudinary } from "../utills/cloudinary.js";
 import hashPassword from "../bcrypt/bcrypt.js";
 import { db } from "../connnection/connection.js";
@@ -44,12 +44,13 @@ console.log("img",img,fullName,email,pass,phone);
 
 
 const token=generateAccessToken(payload)
+const refresh=generateRefreshToken(payload)
 // console.log("token",token);
 
 
 res.cookie("AccessToken",token)
 
-
+        res.cookie("RefreshToken",refresh)
 
 
 
@@ -60,6 +61,10 @@ const sql = `INSERT INTO signup (fullname, email, phone, password, img_url)
 
         // 4. Execute
         const [result] = await db.execute(sql, values);
+
+
+        
+      
         
         console.log('User registered with ID:', result.insertId);
       
@@ -108,10 +113,12 @@ const sql = `select * from signup where email=?
 
         const token=generateAccessToken(payload)
 // console.log("token",token);
+        const refresh=generateRefreshToken(payload)
 
 
 res.cookie("AccessToken",token)
-        
+        res.cookie("RefreshToken",refresh)
+
         console.log('User registered with ID:', result.insertId);
       
 

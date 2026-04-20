@@ -90,7 +90,7 @@ const cars = [
     bgFrom:"tesla.jpg"
   },
   {
-    id: 6,
+    id: 9,
     name: "Range Rover Sport",
     sub: "2024 · 3.0L Supercharged",
     price: 98500,
@@ -222,12 +222,7 @@ function CarCard({ car }) {
 
         {/* Price + CTA */}
         <div className="flex items-center justify-between">
-          <div>
-            <span className="text-yellow-400 font-semibold text-lg">${car.price.toLocaleString()}</span>
-            {car.oldPrice && (
-              <span className="text-zinc-600 text-xs line-through ml-2">${car.oldPrice.toLocaleString()}</span>
-            )}
-          </div>
+      
      
         </div>
       </div>
@@ -252,16 +247,12 @@ function CarCard({ car }) {
             </div>
           ))}
         </div>
-        <div className="mt-1">
-          <span className="text-yellow-400 text-xl font-semibold">${car.price.toLocaleString()}</span>
-        </div>
+        
         <div className="flex gap-2 mt-1">
           <button className="bg-yellow-400 text-black text-xs font-semibold px-4 py-2 rounded-lg hover:bg-yellow-300 transition-colors">
             Book Test Drive
           </button>
-          <button className="border border-zinc-600 text-zinc-300 text-xs px-4 py-2 rounded-lg hover:border-yellow-400 hover:text-yellow-400 transition-colors">
-            Save
-          </button>
+   
 
           
         </div>

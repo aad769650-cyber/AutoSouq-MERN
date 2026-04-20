@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
 
 const cars = [
   {
@@ -220,12 +221,10 @@ export default function AutoSouqHero() {
               className="glow-btn flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-white text-base"
               style={{ background: `linear-gradient(135deg, ${car.accent}, ${car.accent}BB)` }}
             >
-              <span>Book Test Drive</span>
+             <NavLink to={"/contact-us"}> <span>Book Test Drive</span></NavLink>
               <span className="text-xl">→</span>
             </button>
-            <button className="glass px-8 py-4 rounded-2xl font-semibold text-white/80 hover:text-white transition-all duration-200 text-base">
-              View Details
-            </button>
+          
           </div>
 
           {/* Search bar */}
