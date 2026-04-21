@@ -232,7 +232,11 @@ function Finance({ price }) {
         </p>
         <p className="text-zinc-600 text-xs mt-2">*Estimate only. Subject to bank approval.</p>
       </div>
-      <button className="w-full bg-[#e8b86d] hover:bg-[#d4a55a] text-black font-semibold py-3 rounded-xl transition text-sm">
+      <button className="cursor-pointer w-full bg-[#e8b86d] hover:bg-[#d4a55a] text-black font-semibold py-3 rounded-xl transition text-sm"
+      
+      onClick={()=>{
+        toast.error("Finance feature is under construction sorry for discomfort!")
+      }}>
         Apply for Financing
       </button>
     </div>
