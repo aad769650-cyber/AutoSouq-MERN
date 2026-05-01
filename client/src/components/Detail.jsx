@@ -483,7 +483,7 @@ SendMail().then((res)=>{console.log("response",res);
               
               
                 <button onClick={() => setTab("finance")}
-                  className="w-full border border-zinc-700 hover:border-[#e8b86d]/50 text-zinc-300 font-medium py-3 rounded-xl transition text-sm hover:bg-zinc-800/40">
+                  className="w-full cursor-pointer border border-zinc-700 hover:border-[#e8b86d]/50 text-zinc-300 font-medium py-3 rounded-xl transition text-sm hover:bg-zinc-800/40">
                   Calculate Finance
                 </button>
               </div>

@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { toast } from "sonner";
+
 const footerLinks = {
   Browse: [
     { label: "New Cars" },
@@ -115,6 +118,10 @@ const socials = [
 ];
 
 export default function Footer() {
+
+const [input,setInput]=useState("")
+
+
   return (
     <footer className="bg-[#080808] border-t border-zinc-900 font-sans">
 
@@ -129,9 +136,19 @@ export default function Footer() {
             <input
               type="email"
               placeholder="Enter your email address"
+              onChange={(e)=>{setInput(e.target.value)}}
+              value={input}
               className="flex-1 bg-[#161616] border border-zinc-800 rounded-lg px-4 py-2.5 text-[13px] text-zinc-300 placeholder-zinc-700 outline-none focus:border-yellow-500 transition-colors"
             />
-            <button className="bg-yellow-400 hover:bg-yellow-300 text-black text-[12px] font-bold px-5 py-2.5 rounded-lg tracking-widest uppercase transition-colors whitespace-nowrap">
+            <button className="bg-yellow-400 cursor-pointer hover:bg-yellow-300 text-black text-[12px] font-bold px-5 py-2.5 rounded-lg tracking-widest uppercase transition-colors whitespace-nowrap"
+            
+            onClick={()=>{toast.success("Subscribe by this email")
+console.log(input);
+
+setInput("")
+
+            }}
+            >
               Subscribe
             </button>
           </div>
@@ -163,9 +180,9 @@ export default function Footer() {
 
           {/* GCC Flags */}
           <div className="flex items-center gap-2 flex-wrap mb-6">
-            <span className="text-[11px] text-zinc-700 mr-1">Available in</span>
+            <span className="text-[11px] text-zinc-600">Available in</span>
             {gccFlags.map((f) => (
-              <span key={f.name} title={f.name} className="text-base leading-none border border-zinc-800 rounded-sm p-0.5">
+              <span key={f.name} title={f.name} className=" leading-none  text-white rounded-3xl p-1">
                 {f.code}
               </span>
             ))}

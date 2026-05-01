@@ -11,7 +11,12 @@ import nodemailer from "nodemailer"
 
 
 
+const app=express();
 
+
+app.use(cookieParser())
+
+app.use(express.json());
 
 
 
@@ -31,15 +36,14 @@ return cb(null,`${Date.now()}-${file.originalname}`)
 
 const uploads=multer({storage})
 
-const app=express();
 
-
-app.use(cookieParser())
-
-app.use(express.json());
 
 const allowedOrigins = [
-  "http://localhost:5173",  // Vite
+  "http://localhost:5173",
+  
+  "frontend Autosouq.com"
+  
+  // Vite
 ];
 
 app.use(cors(

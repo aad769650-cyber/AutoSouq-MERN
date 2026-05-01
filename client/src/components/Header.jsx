@@ -184,9 +184,7 @@ export default function Header() {
 
             {/* Right actions */}
             <div className="hidden lg:flex items-center gap-4">
-              <button className="p-2 text-white/40 hover:text-[#D4A017] transition-colors duration-300">
-                <Search size={17} />
-              </button>
+           
               <div className="w-px h-5 bg-white/10" />
               <NavLink
                 to="/sell-car"
