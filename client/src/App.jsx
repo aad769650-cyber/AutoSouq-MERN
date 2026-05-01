@@ -3,7 +3,7 @@ import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router
 import MainLayout from './layout/MainLayout'
 import Home from './components/Home'
 import About from './components/About'
-import AutoSouqSellCar from './user/SellCar'
+import AutoSouqSellCar from './User/SellCar'
 import Contact from './components/Contact'
 import Detail from './components/Detail'
 import NewCars from './components/NewCars'
