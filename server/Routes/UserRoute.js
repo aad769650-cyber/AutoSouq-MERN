@@ -48,9 +48,21 @@ const refresh=generateRefreshToken(payload)
 // console.log("token",token);
 
 
-res.cookie("AccessToken",token)
+res.cookie("AccessToken",token,
+    {
+          httpOnly: true,
+  secure: true,          // REQUIRED in production (HTTPS only)
+  sameSite: "None",      // REQUIRED for cross-site (frontend ≠ backend)
+  maxAge: 7 * 24 * 60 * 60 * 1000
+    }
+)
 
-        res.cookie("RefreshToken",refresh)
+        res.cookie("RefreshToken",refresh,{
+              httpOnly: true,
+  secure: true,          // REQUIRED in production (HTTPS only)
+  sameSite: "None",      // REQUIRED for cross-site (frontend ≠ backend)
+  maxAge: 7 * 24 * 60 * 60 * 1000
+        })
 
 
 
@@ -116,8 +128,19 @@ const sql = `select * from signup where email=?
         const refresh=generateRefreshToken(payload)
 
 
-res.cookie("AccessToken",token)
-        res.cookie("RefreshToken",refresh)
+res.cookie("AccessToken",token,
+    {
+          httpOnly: true,
+  secure: true,          // REQUIRED in production (HTTPS only)
+  sameSite: "None",      // REQUIRED for cross-site (frontend ≠ backend)
+  maxAge: 7 * 24 * 60 * 60 * 1000
+    }
+)
+        res.cookie("RefreshToken",refresh,
+            {  httpOnly: true,
+  secure: true,          // REQUIRED in production (HTTPS only)
+  sameSite: "None",      // REQUIRED for cross-site (frontend ≠ backend)
+  maxAge: 7 * 24 * 60 * 60 * 1000})
 
         console.log('User registered with ID:', result.insertId);
       
