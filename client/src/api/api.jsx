@@ -1,7 +1,8 @@
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 const api=axios.create({
-    baseURL:"http://localhost:8000"
+    baseURL:"https://autosouq-mern-backend.onrender.com",
+    withCredentials:true
 })
 
 export const SellCar=async(formData)=>{
