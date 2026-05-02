@@ -19,7 +19,7 @@ app.use(cookieParser())
 app.use(express.json());
 
 
-
+app.set("trust proxy", 1);
 
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{

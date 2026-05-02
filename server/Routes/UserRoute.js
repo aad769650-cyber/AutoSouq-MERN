@@ -119,7 +119,7 @@ const payload={email,password}
 const sql = `select * from signup where email=?
                     `;
         
-        const values = [email,password]
+        const values = [email]
         // 4. Execute
         const [result] = await db.execute(sql, values);
 
