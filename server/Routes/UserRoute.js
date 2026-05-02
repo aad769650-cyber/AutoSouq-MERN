@@ -3,8 +3,8 @@ import multer from "multer"
 import generateAccessToken, { generateRefreshToken } from "../Auth/auth.js";
 import { UploadOnCloudinary } from "../utills/cloudinary.js";
 import hashPassword from "../bcrypt/bcrypt.js";
-import { db } from "../connnection/connection.js";
 import { AuthenticateUser } from "../middleware/middleware.js";
+import  {db}  from "../db/db.js";
 
 
 const storage=multer.diskStorage({

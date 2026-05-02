@@ -3,10 +3,10 @@ import cors from "cors"
 import multer from "multer"
 import path from "path"
 import  {UploadOnCloudinary} from "./utills/cloudinary.js"
-import { db } from "./connnection/connection.js";
 import UserRouter from "./Routes/UserRoute.js";
 import cookieParser from "cookie-parser";
 import nodemailer from "nodemailer"
+import { db } from "./db/db.js";
 
 
 
@@ -41,7 +41,7 @@ const uploads=multer({storage})
 const allowedOrigins = [
   "http://localhost:5173",
   
-  "frontend Autosouq.com"
+  "https://autosouq-mern.onrender.com"
   
   // Vite
 ];
